@@ -32,22 +32,7 @@ class Menu:
     def limpiar_pantalla(self):
         if os.name == 'nt':
             ___ = os.system('cls')
-##################################################################################################
-"""class SubMenu(Menu):
-    def mostrar_menu(self):
-        for i, opcion in enumerate(self.opciones, start=1):
-            print(f"{i}. {opcion}")
-
-    def obtener_seleccion(self):
-        while True:
-            try:
-                seleccion = int(input("\nSeleccione una opción: "))
-                if 1 <= seleccion <= len(self.opciones):
-                    return seleccion
-                else:
-                    print("\nSelección no válida. Por favor, elija una opción válida.")
-            except ValueError:
-                print("\nEntrada no válida. Ingrese un número.")"""
+            
 #####################################################################################################                
                 
 class BleachScraper:
@@ -63,22 +48,38 @@ class BleachScraper:
         if response.status_code != 200:
             raise ValueError('No se pudo obtener información de la página')
         soup = BeautifulSoup(response.text, "html.parser")
-
         h3 = soup.find('span', {'id': 'Zanpaku-t.C5.8D_de_Shinigamis_y_Visored'})
         tabla = h3.find_next('table')
-
-           
+                   
         for fila in tabla.find_all('tr')[2:]:
             columnas = fila.find_all('td')
             if len(columnas) >=3:                
                 nombre = columnas[1].text.strip()
                 espada = columnas[0].text.strip()
                 poder = columnas[2].text.strip()
-                self.shinigamis.append(nombre)
+                self.shinigamis.append((nombre, espada, poder))
                 self.zanpakuto.append(espada)
-                self.bankai.append(poder)
-        
-        return self.shinigamis, self.zanpakuto, self.bankai
+                self.bankai.append(poder)        
+        return self.shinigamis#, self.zanpakuto, self.bankai
+
+    def obtener_holow(self):
+        url_holow = self.url_base + "Hollow#Menos"
+        response = requests.get(url_holow)
+        if response.status_code != 200:
+            raise ValueError('No se pudo obtener información de la página')
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        div = soup.find('div', class_='toctitle')#{'id': 'Descripci.C3.B3n_General'})
+        listado = div.find_next('ul')
+
+        holows_filtrar= []
+        holows = []
+        for li in listado.find_all('li'):
+            nombre = li.text.strip()
+            holows_filtrar.append(nombre)
+        for indice in [8, 9, 10, 12]:
+            holows.append(holows_filtrar[indice])        
+        return holows
 
     def obtener_quincys(self):
         url_quincy = self.url_base + "Lista_de_Quincy"
@@ -103,8 +104,12 @@ class BleachScraper:
 if __name__ == '__main__':
     
     scraper = BleachScraper()  # Crear una instancia de BleachScraper fuera del bucle
-    nombre, _, _ = scraper.obtener_shinigami_zampakuto_bankai()  # Usar la instancia de BleachScraper creada fuera del bucle
-    shinigamis_creados = []
+    personajes_creados = []
+    nombre = scraper.obtener_shinigami_zampakuto_bankai()
+    nombres = scraper.obtener_holow()
+    nombres_filtrados = []# Usar la instancia de BleachScraper creada fuera del bucle     
+
+
     while True:
         menu = Menu()
         menu.limpiar_pantalla()
@@ -129,40 +134,82 @@ if __name__ == '__main__':
             subseleccion = submenu.obtener_seleccion()
             submenu.limpiar_pantalla()
             
-            if subseleccion == 1:                
+            if subseleccion == 1:            
                 for i, n in enumerate(nombre, start=1):
-                    print(f"{i}. {n}")
+                    print(f"{i}. {n[0]}")
                 ## Validación de datos                  
                 while True:
                     numero_shinigami = int(input('\nDigita el número del Shinigami que deseas crear: ')) - 1
                     try:
                         if 0 <= numero_shinigami < len(nombre):
                             shinigami_seleccionado = nombre[numero_shinigami]
-                            print(f"Has seleccionado a {shinigami_seleccionado}.")
-                            shinigamis_creados.append(shinigami_seleccionado)
+                            print(f"\nHas seleccionado a {shinigami_seleccionado[0]}")
+                            personajes_creados.append((shinigami_seleccionado[0], 'Shinigami'))
                         else:
                             print("Número de Shinigami no válido.")
-                        print(shinigamis_creados)
-                        input("Presiona Enter para continuar...")
+                        #print(personajes_creados)
+                        input("\nPresiona Enter para continuar...")
                     except ValueError:
                         print("\nEntrada no válida. Ingrese un número.")
                     submenu.limpiar_pantalla()
                     break
             
-            elif seleccion == 2:
-                pass
-                # Lógica para la opción 2
-            elif seleccion == 3:
-                pass
-                # Lógica para la opción 3
+            elif subseleccion == 2:
+                print('Nombre de los Holows:')
+                for opcion in nombres:
+                    nombres_filtrados.append((opcion[4:]))
+                for i, nombre in enumerate(nombres_filtrados, start=1):
+                    print(f"{i}. {nombre}")
+                ## Validación de datos                  
+                while True:
+                    numero_holow = int(input('\nDigita el número del Shinigami que deseas crear: ')) - 1
+                    try:
+                        if 0 <= numero_holow < len(nombres_filtrados):
+                            holow_seleccionado = nombres_filtrados[numero_holow]
+                            print(f"\nHas seleccionado a {holow_seleccionado}")
+                            personajes_creados.append((holow_seleccionado, 'Holow'))
+                        else:
+                            print("Número de Holow no válido.")
+                        print(personajes_creados)
+                        input("\nPresiona Enter para continuar...")
+                    except ValueError:
+                        print("\nEntrada no válida. Ingrese un número.")
+                    submenu.limpiar_pantalla()
+                    break                
+            
+            elif subseleccion == 3:
+                input("\nPresiona Enter para continuar...")
+                break
+            
             elif seleccion == 4:
                 pass
+
                 # Lógica para la opción 4
             elif seleccion == 5:
                 print("Saliendo del programa. ¡Hasta luego!")
                 break
+
+        elif seleccion == 2:
+            print(f'------Personajes creados------\n')
+            for i, personaje in enumerate(personajes_creados, start = 1):
+                print(f'{i}. {personaje[0]}    ---   {personaje[1]}')
+            input("\nPresiona Enter para continuar...")
+            while True:
+                try:
+                    if 0 <= numero_holow < len(nombres_filtrados):
+                        holow_seleccionado = nombres_filtrados[numero_holow]
+                        print(f"\nHas seleccionado a {holow_seleccionado}")
+                        personajes_creados.append((holow_seleccionado, 'Holow'))
+                    else:
+                        print("Número de Holow no válido.")
+                    input("\nPresiona Enter para continuar...")
+                except ValueError:
+                    print("\nEntrada no válida. Ingrese un número.")
+                submenu.limpiar_pantalla()
+                break            
+
         elif seleccion == 5:
-            print("Saliendo del programa. ¡Hasta luego!")
+            print("Saliendo del programa. ¡Hasta luego!\n")
             break
 
         
