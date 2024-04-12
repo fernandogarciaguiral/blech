@@ -108,7 +108,8 @@ if __name__ == '__main__':
     nombre = scraper.obtener_shinigami_zampakuto_bankai()
     nombres = scraper.obtener_holow()
     nombres_filtrados = []# Usar la instancia de BleachScraper creada fuera del bucle     
-
+    for opcion in nombres:
+        nombres_filtrados.append((opcion[4:]))
 
     while True:
         menu = Menu()
@@ -156,8 +157,6 @@ if __name__ == '__main__':
             
             elif subseleccion == 2:
                 print('Nombre de los Holows:')
-                for opcion in nombres:
-                    nombres_filtrados.append((opcion[4:]))
                 for i, nombre in enumerate(nombres_filtrados, start=1):
                     print(f"{i}. {nombre}")
                 ## Validación de datos                  
@@ -170,7 +169,6 @@ if __name__ == '__main__':
                             personajes_creados.append((holow_seleccionado, 'Holow'))
                         else:
                             print("Número de Holow no válido.")
-                        print(personajes_creados)
                         input("\nPresiona Enter para continuar...")
                     except ValueError:
                         print("\nEntrada no válida. Ingrese un número.")
@@ -179,7 +177,7 @@ if __name__ == '__main__':
             
             elif subseleccion == 3:
                 input("\nPresiona Enter para continuar...")
-                
+                break
             
             elif seleccion == 4:
                 pass
@@ -190,19 +188,19 @@ if __name__ == '__main__':
             for i, personaje in enumerate(personajes_creados, start = 1):
                 print(f'{i}. {personaje[0]}    ---   {personaje[1]}')
             input("\nPresiona Enter para continuar...")
-            while True:
-                try:
-                    if 0 <= numero_holow < len(nombres_filtrados):
-                        holow_seleccionado = nombres_filtrados[numero_holow]
-                        print(f"\nHas seleccionado a {holow_seleccionado}")
-                        personajes_creados.append((holow_seleccionado, 'Holow'))
-                    else:
-                        print("Número de Holow no válido.")
-                    input("\nPresiona Enter para continuar...")
-                except ValueError:
-                    print("\nEntrada no válida. Ingrese un número.")
-                submenu.limpiar_pantalla()
-                break            
+            # while True:
+            #     try:
+            #         if 0 <= numero_holow < len(nombres_filtrados):
+            #             holow_seleccionado = nombres_filtrados[numero_holow]
+            #             print(f"\nHas seleccionado a {holow_seleccionado}")
+            #             personajes_creados.append((holow_seleccionado, 'Holow'))
+            #         else:
+            #             print("Número de Holow no válido.")
+            #         input("\nPresiona Enter para continuar...")
+            #     except ValueError:
+            #         print("\nEntrada no válida. Ingrese un número.")
+            #     submenu.limpiar_pantalla()
+            #     break            
 
         elif seleccion == 5:
             print("Saliendo del programa. ¡Hasta luego!\n")
