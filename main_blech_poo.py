@@ -179,15 +179,11 @@ if __name__ == '__main__':
             
             elif subseleccion == 3:
                 input("\nPresiona Enter para continuar...")
-                break
+                
             
             elif seleccion == 4:
                 pass
 
-                # Lógica para la opción 4
-            elif seleccion == 5:
-                print("Saliendo del programa. ¡Hasta luego!")
-                break
 
         elif seleccion == 2:
             print(f'------Personajes creados------\n')
