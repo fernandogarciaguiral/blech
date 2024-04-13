@@ -1,4 +1,4 @@
-      
+
 
 
 import os
@@ -151,13 +151,12 @@ if __name__ == '__main__':
                             shinigami_seleccionado = nombre[numero_shinigami]
                             print(f"\nHas seleccionado a {shinigami_seleccionado[0]}")
                             personajes_creados.append((shinigami_seleccionado[0], 'Shinigami'))
+                            input("\nPresiona Enter para continuar...")
+                            submenu.limpiar_pantalla()
                         else:
                             print("Número de Shinigami no válido.")
-                        #print(personajes_creados)
-                        input("\nPresiona Enter para continuar...")
                     except ValueError:
                         print("\nEntrada no válida. Ingrese un número.")
-                    submenu.limpiar_pantalla()
                     break
             
             elif subseleccion == 2:
@@ -172,12 +171,12 @@ if __name__ == '__main__':
                             holow_seleccionado = nombres_filtrados[numero_holow]
                             print(f"\nHas seleccionado a {holow_seleccionado}")
                             personajes_creados.append((holow_seleccionado, 'Holow'))
+                            input("\nPresiona Enter para continuar...")
+                            submenu.limpiar_pantalla()
                         else:
                             print("Número de Holow no válido.")
-                        input("\nPresiona Enter para continuar...")
                     except ValueError:
                         print("\nEntrada no válida. Ingrese un número.")
-                    submenu.limpiar_pantalla()
                     break                
             
             elif subseleccion == 3:
@@ -191,13 +190,12 @@ if __name__ == '__main__':
                             quincy_seleccionado = quincy[numero_quincy]
                             print(f"\nHas seleccionado a {quincy_seleccionado}")
                             personajes_creados.append((quincy_seleccionado, 'Quincy'))
+                            input("\nPresiona Enter para continuar...")
+                            submenu.limpiar_pantalla()
                         else:
                             print("Número de Shinigami no válido.")
-                        #print(personajes_creados)
-                        input("\nPresiona Enter para continuar...")
                     except ValueError:
                         print("\nEntrada no válida. Ingrese un número.")
-                    submenu.limpiar_pantalla()
                     break
             
             elif seleccion == 4:
